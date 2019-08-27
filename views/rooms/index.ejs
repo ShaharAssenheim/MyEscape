@@ -2,10 +2,10 @@
 
 <div class="container">
     <!-- the header jumbotron -->
-    <header class="jumbotron">
+    <header class="jumbotron ">
         <div class="container">
-            <h1><i class="fas fa-door-open"></i>Welcome To MyEscape!</h1>
-            <p>View our hand-picked Escape Rooms from all over the world</p>
+            <h1 class="display-4"><i class="fas fa-door-open"></i>Welcome To MyEscape!</h1>
+            <p class="lead">View our hand-picked Escape Rooms from all over the world</p>
             <p>
                 <a class="btn btn-primary btn-large" href="/rooms/new">Add New Escape Room</a>
             </p>
@@ -38,9 +38,11 @@
     <div class="row text-center" id="room-grid">
         <% rooms.forEach(function(room){ %>
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card">
-                <img class="card-img-top" src="<%= room.image %>" alt="<%= room.name %>">
-                <div class="card-body">
+            <div class="card" >
+                <div class="embed-responsive embed-responsive-16by9">
+                    <img class="card-img-top embed-responsive-item" src="<%= room.image %>" alt="<%= room.name %>">
+                </div>
+                <div class="card-body card-transparent" >
                     <h5 class="card-title mb-1">
                         <%= room.name %>
                     </h5>
