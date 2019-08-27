@@ -99,8 +99,9 @@ body {
         margin-top: 2rem;
     }
 
-    .jumbotron .h1 {
-        width: 20%;
+    .jumbotron h1 {
+        font-size: 3em;
+      
     }
 
 }
