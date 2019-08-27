@@ -8,13 +8,13 @@ var express     = require("express"),
     passport    = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
-    Campground  = require("./models/campground"),
+    Room  = require("./models/room"),
     Comment     = require("./models/comment"),
     User        = require("./models/user");
     
 //requiring routes
 var commentRoutes    = require("./routes/comments"),
-    campgroundRoutes = require("./routes/campgrounds"),
+    roomRoutes = require("./routes/rooms"),
     indexRoutes      = require("./routes/index")
     
 //mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser:true});
@@ -57,10 +57,10 @@ app.use(function(req, res, next){
 });
 
 app.use("/", indexRoutes);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/rooms", roomRoutes);
+app.use("/rooms/:id/comments", commentRoutes);
 
 // use port 3000 unless there exists a preconfigured port
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
-   console.log("The YelpCamp Server Has Started!");
+   console.log("The MyEscape Server Has Started!");
 });

@@ -3,23 +3,23 @@
     <div class="row">
         <div class="col-md-8 ">
             <div class="card mb-3">
-                <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
+                <img class="card-img-top" src="<%= room.image %>" alt="<%= room.name %>">
                 <div class="card-body">
                     <p class="float-right">
                         $
-                        <%= campground.price %>/night
+                        <%= room.price %>/night
                     </p>
                     <h5 class="card-title mb-3">
-                        <%= campground.name %>
+                        <%= room.name %>
                     </h5>
                     <p class="float-right mb-3">
-                        <button type="button" class="btn btn-sm btn-primary " data-toggle="modal" data-target="#campgroundLikes">
-            <span>Total likes: <i class="fas fa-thumbs-up"></i> <%= campground.likes.length %></span>
+                        <button type="button" class="btn btn-sm btn-primary " data-toggle="modal" data-target="#roomLikes">
+            <span>Total likes: <i class="fas fa-thumbs-up"></i> <%= room.likes.length %></span>
           </button>
                     </p>
-                    <form action="/campgrounds/<%= campground._id %>/like" method="POST">
+                    <form action="/rooms/<%= room._id %>/like" method="POST">
                         <div class="btn-group mb-3">
-                            <% if (currentUser && campground.likes.some(function (like) {
+                            <% if (currentUser && room.likes.some(function (like) {
                               return like.equals(currentUser._id)
                           })) { %>
                                 <button class="btn btn-sm btn-primary">
@@ -31,16 +31,16 @@
                         </div>
                     </form>
                     <p>
-                        <em>Submitted by: <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a>,
-            <%= moment(campground.createdAt).fromNow() %></em>
+                        <em>Submitted by: <a href="/users/<%= room.author.id %>"><%= room.author.username %></a>,
+            <%= moment(room.createdAt).fromNow() %></em>
                     </p>
                     <hr>
                     <p class="card-text">
-                        <%= campground.description %>
+                        <%= room.description %>
                     </p>
-                    <% if(currentUser && campground.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
-                        <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-                        <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST" class="delete-form">
+                    <% if(currentUser && room.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                        <a class="btn btn-warning" href="/rooms/<%= room._id %>/edit">Edit</a>
+                        <form action="/rooms/<%= room._id %>?_method=DELETE" method="POST" class="delete-form">
                             <button class="btn btn-danger">Delete</button>
                         </form>
                         <% } %>
@@ -49,11 +49,11 @@
             <div class="card bg-light">
                 <div class="card-body">
                     <div class="text-right">
-                        <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+                        <a class="btn btn-success" href="/rooms/<%= room._id %>/comments/new">Add New Comment</a>
                     </div>
                     <hr>
                     <div class="row">
-                        <% campground.comments.forEach(function(comment){ %>
+                        <% room.comments.forEach(function(comment){ %>
                             <div class="col-md-12 mb-2">
                                 <div class="card">
                                     <div class="card-body">
@@ -70,8 +70,8 @@
 
                                             <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
                                                 <div class="float-right">
-                                                    <a href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit" class="btn btn-sm btn-warning">EDIT</a>
-                                                    <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                                    <a href="/rooms/<%=room._id%>/comments/<%=comment._id%>/edit" class="btn btn-sm btn-warning">EDIT</a>
+                                                    <form class="delete-form" action="/rooms/<%=room._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
                                                         <button class="btn btn-sm btn-danger">DELETE</button>
                                                     </form>
                                                 </div>
@@ -91,14 +91,14 @@
     </div>
     
 
-    <!-- Campground Likes Modal -->
-    <div id="campgroundLikes" class="modal" tabindex="-1" role="dialog">
+    <!-- Escape Room Likes Modal -->
+    <div id="roomLikes" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <%= campground.name %> Likes:
-                            <%= campground.likes.length %>
+                        <%= room.name %> Likes:
+                            <%= room.likes.length %>
                     </h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -110,16 +110,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% campground.likes.forEach(function(like) { %>
+                            <% room.likes.forEach(function(like) { %>
                                 <tr>
                                     <td><span class="badge"><i class="fas fa-user"></i></span>
-                                        <a href="/users/<%= campground.author.id %>">
+                                        <a href="/users/<%= room.author.id %>">
                                             <%= like.username %>
                                         </a>
                                     </td>
                                 </tr>
                                 <% }); %>
-                                    <% if (campground.likes.length === 0) { %>
+                                    <% if (room.likes.length === 0) { %>
                                         <tr>
                                             <td><em>No likes yet.</em></td>
                                         </tr>
@@ -137,8 +137,8 @@
     <!-- google map script -->
     <script>
         function initMap() {
-            var lat = <%= campground.lat %>;
-            var lng = <%= campground.lng %>;
+            var lat = <%= room.lat %>;
+            var lng = <%= room.lng %>;
             var center = {
                 lat: lat,
                 lng: lng
@@ -149,9 +149,9 @@
                 scrollwheel: false
             });
             var contentString = `
-      <strong><%= campground.name %><br />
-      <%= campground.location %></strong>
-      <p><%= campground.description %></p>
+      <strong><%= room.name %><br />
+      <%= room.location %></strong>
+      <p><%= room.description %></p>
     `
             var infowindow = new google.maps.InfoWindow({
                 content: contentString

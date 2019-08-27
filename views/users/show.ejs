@@ -9,11 +9,11 @@
             
         </div>
         <div class="col-md-8">
-            <h3><%= user.username %> campgrounds:</h3>
+            <h3><%= user.username %> rooms:</h3>
             <ul style="list-style-type: none">
-            <% campgrounds.forEach(function(campground) { %>
+            <% rooms.forEach(function(room) { %>
                 <div class="card-image mb-3">
-                    <li><a href="/campgrounds/<%= campground.id %>"><img src="<%= campground.image %>"style="width:10%; border-radius: 50%"> <%= campground.name %></a></li>
+                    <li><a href="/rooms/<%= room.id %>"><img src="<%= room.image %>"style="width:10%; border-radius: 50%"> <%= room.name %></a></li>
                 </div>
             <% }); %>
             </ul>
