@@ -40,22 +40,22 @@ body{
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(/img/K3mPv14.jpg) 
+  background-image: url(https://res.cloudinary.com/dmrx96yqx/image/upload/v1566906472/City-13-Escape-Room-759x500_nb2tm4.jpg) 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(/img/SBEmFpv.jpg);
+  background-image: url(https://res.cloudinary.com/dmrx96yqx/image/upload/v1566906473/MW-DQ129_escape_ZH_20150715115210_in25wq.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(/img/emvhOnb.jpg);
+  background-image: url(https://res.cloudinary.com/dmrx96yqx/image/upload/v1566906472/gn-gift_guide_variable_c_m2q7kb.jpg);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(/img/2LSMCmJ.jpg);
+  background-image: url(https://res.cloudinary.com/dmrx96yqx/image/upload/v1566906473/The-Room-2-escape-rooms-1-900x506_vv33zh.jpg);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(/img/TVGe0Ef.jpg);
+  background-image: url(https://res.cloudinary.com/dmrx96yqx/image/upload/v1566906478/bigstock-Black-and-white-image-of-antiq-118422443_spqru8.jpg);
   animation-delay: 40s; 
 }
 
