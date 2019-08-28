@@ -4,6 +4,8 @@ var Comment = require("../models/comment");
 // all the middleare goes here
 var middlewareObj = {};
 
+//check if the current user logged in,
+//if it is check if its the owner of the room or the admin.
 middlewareObj.checkRoomOwnership = function (req, res, next) {
     if (req.isAuthenticated()) {
         Room.findById(req.params.id, function (err, foundRoom) {
@@ -26,6 +28,8 @@ middlewareObj.checkRoomOwnership = function (req, res, next) {
     }
 }
 
+//check if the current user logged in,
+//if it is check if its the owner of the comment or the admin.
 middlewareObj.checkCommentOwnership = function (req, res, next) {
     if (req.isAuthenticated()) {
         Comment.findById(req.params.comment_id, function (err, foundComment) {
@@ -47,6 +51,7 @@ middlewareObj.checkCommentOwnership = function (req, res, next) {
     }
 }
 
+//check if the current user logged in.
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
         return next();

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Room = require("../models/room");
 var middleware = require("../middleware");
+//Google map API settings:
 var NodeGeocoder = require('node-geocoder');
 var options = {
     provider: 'google',
@@ -11,6 +12,7 @@ var options = {
 };
 var geocoder = NodeGeocoder(options);
 
+//upload images settings:
 var multer = require('multer');
 var storage = multer.diskStorage({
     filename: function (req, file, callback) {
@@ -26,6 +28,7 @@ var imageFilter = function (req, file, cb) {
 };
 var upload = multer({ storage: storage, fileFilter: imageFilter })
 
+//cloud for uploading images settings:
 var cloudinary = require('cloudinary');
 cloudinary.config({
     cloud_name: 'dmrx96yqx',
@@ -39,6 +42,7 @@ router.get("/", function (req, res) {
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
     var noMatch = null;
+    //if search throw the fuzzy search
     if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         Room.find({ name: regex }).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function (err, allRooms) {
@@ -61,7 +65,7 @@ router.get("/", function (req, res) {
             });
         });
     } else {
-        // get all Escape Rooms from DB
+        // show all Escape Rooms from DB
         Room.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function (err, allRooms) {
             Room.count().exec(function (err, count) {
                 if (err) {
@@ -78,6 +82,11 @@ router.get("/", function (req, res) {
             });
         });
     }
+});
+
+//NEW - show form to create new Escape Room
+router.get("/new", middleware.isLoggedIn, function (req, res) {
+    res.render("rooms/new");
 });
 
 //CREATE - add new Escape Room to DB
@@ -114,11 +123,6 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function (req, r
     });
 });
 
-//NEW - show form to create new Escape Room
-router.get("/new", middleware.isLoggedIn, function (req, res) {
-    res.render("rooms/new");
-});
-
 // SHOW - shows more info about one Escape Room
 router.get("/:id", function (req, res) {
     //find the Escape Room with provided ID
@@ -126,7 +130,6 @@ router.get("/:id", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundRoom)
             //render show template with that Escape Room
             res.render("rooms/show", { room: foundRoom });
         }
@@ -150,7 +153,6 @@ router.put("/:id", middleware.checkRoomOwnership, upload.single('image'), functi
         req.body.room.lat = data[0].latitude;
         req.body.room.lng = data[0].longitude;
         req.body.room.location = data[0].formattedAddress;
-
 
         Room.findById(req.params.id, async function (err, room) {
             if (err) {
@@ -210,7 +212,6 @@ router.post("/:id/like", middleware.isLoggedIn, function (req, res) {
             console.log(err);
             return res.redirect("/rooms");
         }
-
         // check if req.user._id exists in foundRoom.likes
         var foundUserLike = foundRoom.likes.some(function (like) {
             return like.equals(req.user._id);

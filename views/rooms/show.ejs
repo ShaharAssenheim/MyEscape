@@ -1,170 +1,174 @@
 <% include ../partials/header %>
 
-    <div class="row">
-        <div class="col-md-8 ">
-            <div class="card mb-3">
-                <img class="card-img-top" src="<%= room.image %>" alt="<%= room.name %>">
-                <div class="card-body">
-                    <p class="float-right">
-                        $
-                        <%= room.price %>/night
-                    </p>
-                    <h5 class="card-title mb-3">
-                        <%= room.name %>
-                    </h5>
-                    <p class="float-right mb-3">
-                        <button type="button" class="btn btn-sm btn-primary " data-toggle="modal" data-target="#roomLikes">
-            <span>Total likes: <i class="fas fa-thumbs-up"></i> <%= room.likes.length %></span>
-          </button>
-                    </p>
-                    <form action="/rooms/<%= room._id %>/like" method="POST">
-                        <div class="btn-group mb-3">
-                            <% if (currentUser && room.likes.some(function (like) {
+<div class="row">
+    <div class="col-md-8 ">
+        <div class="card mb-3">
+            <img class="card-img-top" src="<%= room.image %>" alt="<%= room.name %>">
+            <div class="card-body">
+                <p class="float-right">
+                    $
+                    <%= room.price %>/night
+                </p>
+                <h5 class="card-title mb-3">
+                    <%= room.name %>
+                </h5>
+                <p class="float-right mb-3">
+                    <button type="button" class="btn btn-sm btn-primary " data-toggle="modal" data-target="#roomLikes">
+                        <span>Total likes: <i class="fas fa-thumbs-up"></i> <%= room.likes.length %></span>
+                    </button>
+                </p>
+                <form action="/rooms/<%= room._id %>/like" method="POST">
+                    <div class="btn-group mb-3">
+                        <% if (currentUser && room.likes.some(function (like) {
                               return like.equals(currentUser._id)
                           })) { %>
-                                <button class="btn btn-sm btn-primary">
-              <i class="fas fa-thumbs-up"></i> Liked</button>
-                                <% } else { %>
-                                    <button class="btn btn-sm btn-secondary">
-              <i class="fas fa-thumbs-up"></i> Like</button>
-                                    <% } %>
-                        </div>
-                    </form>
-                    <p>
-                        <em>Submitted by: <a href="/users/<%= room.author.id %>"><%= room.author.username %></a>,
-            <%= moment(room.createdAt).fromNow() %></em>
-                    </p>
-                    <hr>
-                    <p class="card-text">
-                        <%= room.description %>
-                    </p>
-                    <% if(currentUser && room.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
-                        <a class="btn btn-warning" href="/rooms/<%= room._id %>/edit">Edit</a>
-                        <form action="/rooms/<%= room._id %>?_method=DELETE" method="POST" class="delete-form">
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fas fa-thumbs-up"></i> Liked</button>
+                        <% } else { %>
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="fas fa-thumbs-up"></i> Like</button>
                         <% } %>
-                </div>
-            </div>
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="text-right">
-                        <a class="btn btn-success" href="/rooms/<%= room._id %>/comments/new">Add New Comment</a>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <% room.comments.forEach(function(comment){ %>
-                            <div class="col-md-12 mb-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="float-left">
-                                            <p class="card-title"><strong><%= comment.author.username %></strong></p>
-                                            <p class="card-text">
-                                                <%= comment.text %>
-                                            </p>
-                                        </div>
-                                        <div class="float-right">
-                                            <p>
-                                                <%= moment(comment.createdAt).fromNow() %>
-                                            </p>
+                </form>
+                <p>
+                    <em>Submitted by: <a href="/users/<%= room.author.id %>"><%= room.author.username %></a>,
+                        <%= moment(room.createdAt).fromNow() %></em>
+                </p>
+                <hr>
+                <p class="card-text">
+                    <%= room.description %>
+                </p>
+                <% if(currentUser && room.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                <a class="btn btn-warning" href="/rooms/<%= room._id %>/edit">Edit</a>
+                <form action="/rooms/<%= room._id %>?_method=DELETE" method="POST" class="delete-form">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+                <% } %>
+            </div>
+        </div>
+        <div class="card bg-light">
+            <div class="card-body">
+                <div class="text-right">
+                    <a class="btn btn-success" href="/rooms/<%= room._id %>/comments/new">Add New Comment</a>
+                </div>
+                <hr>
+                <div class="row">
+                    <% room.comments.forEach(function(comment){ %>
+                    <div class="col-md-12 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="float-left">
+                                    <p class="card-title"><strong><%= comment.author.username %></strong></p>
+                                    <p class="card-text">
+                                        <%= comment.text %>
+                                    </p>
+                                </div>
+                                <div class="float-right">
+                                    <p>
+                                        <%= moment(comment.createdAt).fromNow() %>
+                                    </p>
 
-                                            <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
-                                                <div class="float-right">
-                                                    <a href="/rooms/<%=room._id%>/comments/<%=comment._id%>/edit" class="btn btn-sm btn-warning">EDIT</a>
-                                                    <form class="delete-form" action="/rooms/<%=room._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                                        <button class="btn btn-sm btn-danger">DELETE</button>
-                                                    </form>
-                                                </div>
-                                                <% } %>
-                                        </div>
+                                    <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+                                    <div class="float-right">
+                                        <a href="/rooms/<%=room._id%>/comments/<%=comment._id%>/edit"
+                                            class="btn btn-sm btn-warning">EDIT</a>
+                                        <form class="delete-form"
+                                            action="/rooms/<%=room._id%>/comments/<%=comment._id%>?_method=DELETE"
+                                            method="POST">
+                                            <button class="btn btn-sm btn-danger">DELETE</button>
+                                        </form>
                                     </div>
+                                    <% } %>
                                 </div>
                             </div>
-                            <% }) %>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 ">
-                <div id="map"></div>
-        </div>
-    </div>
-    
-
-    <!-- Escape Room Likes Modal -->
-    <div id="roomLikes" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">
-                        <%= room.name %> Likes:
-                            <%= room.likes.length %>
-                    </h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Liked by:</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% room.likes.forEach(function(like) { %>
-                                <tr>
-                                    <td><span class="badge"><i class="fas fa-user"></i></span>
-                                        <a href="/users/<%= room.author.id %>">
-                                            <%= like.username %>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                                    <% if (room.likes.length === 0) { %>
-                                        <tr>
-                                            <td><em>No likes yet.</em></td>
-                                        </tr>
-                                        <% } %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <% }) %>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-4 ">
+        <div id="map"></div>
+    </div>
+</div>
 
-    <!-- google map script -->
-    <script>
-        function initMap() {
-            var lat = <%= room.lat %>;
-            var lng = <%= room.lng %>;
-            var center = {
-                lat: lat,
-                lng: lng
-            };
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 8,
-                center: center,
-                scrollwheel: false
-            });
-            var contentString = `
+
+<!-- Escape Room Likes Modal -->
+<div id="roomLikes" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <%= room.name %> Likes:
+                    <%= room.likes.length %>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Liked by:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% room.likes.forEach(function(like) { %>
+                        <tr>
+                            <td><span class="badge"><i class="fas fa-user"></i></span>
+                                <a href="/users/<%= room.author.id %>">
+                                    <%= like.username %>
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                        <% if (room.likes.length === 0) { %>
+                        <tr>
+                            <td><em>No likes yet.</em></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- google map script -->
+<script>
+    function initMap() {
+        var lat = <%= room.lat %>;
+        var lng = <%= room.lng %>;
+        var center = {
+            lat: lat,
+            lng: lng
+        };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: center,
+            scrollwheel: false
+        });
+        var contentString = `
       <strong><%= room.name %><br />
       <%= room.location %></strong>
       <p><%= room.description %></p>
     `
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-            var marker = new google.maps.Marker({
-                position: center,
-                map: map
-            });
-            marker.addListener('click', function() {
-                infowindow.open(map, marker);
-            });
-        }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0VsroXxeRwFmCLKF1HxBaA0WgCIBdaOg&callback=initMap"></script>
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener('click', function () {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0VsroXxeRwFmCLKF1HxBaA0WgCIBdaOg&callback=initMap"></script>
 
-    <% include ../partials/footer %>
+<% include ../partials/footer %>

@@ -12,12 +12,11 @@ var express     = require("express"),
     Comment     = require("./models/comment"),
     User        = require("./models/user");
     
-//requiring routes
-var commentRoutes    = require("./routes/comments"),
-    roomRoutes = require("./routes/rooms"),
-    indexRoutes      = require("./routes/index")
-    
+
+  
+//connect to the local DB
 //mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser:true});
+//connect to the mongoDB atlas DB
 mongoose.connect("mongodb+srv://shaharassen:shachar222@cluster0-cv4kt.mongodb.net/EscapeRoom?retryWrites=true&w=majority",{
     useNewUrlParser:true,
     useCreateIndex: true
@@ -32,7 +31,6 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
-
 
 //require moment.js for addeing time since created
 app.locals.moment = require('moment');
@@ -56,6 +54,11 @@ app.use(function(req, res, next){
    next();
 });
 
+//requiring routes
+var commentRoutes    = require("./routes/comments"),
+    roomRoutes = require("./routes/rooms"),
+    indexRoutes      = require("./routes/index");
+    
 app.use("/", indexRoutes);
 app.use("/rooms", roomRoutes);
 app.use("/rooms/:id/comments", commentRoutes);

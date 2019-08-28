@@ -1,3 +1,4 @@
+/* css for the landing page  */
 body{
     background-color: black;
 }
@@ -11,6 +12,10 @@ body{
 
 #landing-header h1 {
   color: #fff;
+}
+
+#landing-header #btn-head {
+  font-size: 2em;
 }
 
 .slideshow { 
