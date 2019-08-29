@@ -1,35 +1,35 @@
-var express = require("express");
-var router = express.Router();
-var Room = require("../models/room");
-var middleware = require("../middleware");
+const express = require("express");
+const router = express.Router();
+const Room = require("../models/room");
+const middleware = require("../middleware");
 //Google map API settings:
-var NodeGeocoder = require('node-geocoder');
-var options = {
+const NodeGeocoder = require('node-geocoder');
+let options = {
     provider: 'google',
     httpAdapter: 'https',
     apiKey: process.env.GEOCODER_API_KEY,
     formatter: null
 };
-var geocoder = NodeGeocoder(options);
+const geocoder = NodeGeocoder(options);
 
 //upload images settings:
-var multer = require('multer');
-var storage = multer.diskStorage({
+const multer = require('multer');
+let storage = multer.diskStorage({
     filename: function (req, file, callback) {
         callback(null, Date.now() + file.originalname);
     }
 });
-var imageFilter = function (req, file, cb) {
+let imageFilter = function (req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
 };
-var upload = multer({ storage: storage, fileFilter: imageFilter })
+let upload = multer({ storage: storage, fileFilter: imageFilter })
 
 //cloud for uploading images settings:
-var cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary');
 cloudinary.config({
     cloud_name: 'dmrx96yqx',
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -38,10 +38,10 @@ cloudinary.config({
 
 //INDEX - show all Escape Rooms
 router.get("/", function (req, res) {
-    var perPage = 8;
-    var pageQuery = parseInt(req.query.page);
-    var pageNumber = pageQuery ? pageQuery : 1;
-    var noMatch = null;
+    const perPage = 8;
+    let pageQuery = parseInt(req.query.page);
+    let pageNumber = pageQuery ? pageQuery : 1;
+    let noMatch = null;
     //if search throw the fuzzy search
     if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -162,7 +162,7 @@ router.put("/:id", middleware.checkRoomOwnership, upload.single('image'), functi
                 if (req.file) {
                     try {
                         await cloudinary.v2.uploader.destroy(room.imageId);
-                        var result = await cloudinary.v2.uploader.upload(req.file.path);
+                        let result = await cloudinary.v2.uploader.upload(req.file.path);
                         room.imageId = result.public_id;
                         room.image = result.secure_url;
                     } catch (err) {
@@ -213,7 +213,7 @@ router.post("/:id/like", middleware.isLoggedIn, function (req, res) {
             return res.redirect("/rooms");
         }
         // check if req.user._id exists in foundRoom.likes
-        var foundUserLike = foundRoom.likes.some(function (like) {
+        let foundUserLike = foundRoom.likes.some(function (like) {
             return like.equals(req.user._id);
         });
 

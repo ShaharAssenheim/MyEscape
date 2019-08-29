@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-var express     = require("express"),
+const express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
@@ -55,7 +55,7 @@ app.use(function(req, res, next){
 });
 
 //requiring routes
-var commentRoutes    = require("./routes/comments"),
+const commentRoutes    = require("./routes/comments"),
     roomRoutes = require("./routes/rooms"),
     indexRoutes      = require("./routes/index");
     

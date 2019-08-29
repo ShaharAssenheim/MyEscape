@@ -140,26 +140,26 @@
 <!-- google map script -->
 <script>
     function initMap() {
-        var lat = <%= room.lat %>;
-        var lng = <%= room.lng %>;
-        var center = {
+        let lat = <%= room.lat %>;
+        let lng = <%= room.lng %>;
+        let center = {
             lat: lat,
             lng: lng
         };
-        var map = new google.maps.Map(document.getElementById('map'), {
+        let map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
             center: center,
             scrollwheel: false
         });
-        var contentString = `
+        let contentString = `
       <strong><%= room.name %><br />
       <%= room.location %></strong>
       <p><%= room.description %></p>
     `
-        var infowindow = new google.maps.InfoWindow({
+        let infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
             position: center,
             map: map
         });

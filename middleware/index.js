@@ -1,8 +1,8 @@
-var Room = require("../models/room");
-var Comment = require("../models/comment");
+const Room = require("../models/room");
+const Comment = require("../models/comment");
 
 // all the middleare goes here
-var middlewareObj = {};
+const middlewareObj = {};
 
 //check if the current user logged in,
 //if it is check if its the owner of the room or the admin.
