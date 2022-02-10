@@ -19,7 +19,8 @@ const express     = require("express"),
 //connect to the mongoDB atlas DB
 mongoose.connect("mongodb+srv://shaharassen:Flex9358@cluster0-cv4kt.mongodb.net/EscapeRoom?retryWrites=true&w=majority",{
     useNewUrlParser:true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true 
 }).then(()=>{
     console.log("connect to DB");
 }).catch(err =>{

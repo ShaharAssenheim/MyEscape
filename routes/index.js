@@ -92,6 +92,7 @@ router.post('/forgot', function (req, res, next) {
             });
         },
         function (token, user, done) {
+            console.log(process.env.GMAILPW);
             let smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
