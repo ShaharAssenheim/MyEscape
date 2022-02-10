@@ -1,0 +1,82 @@
+const express = require("express");
+const router = express.Router({ mergeParams: true });
+const Room = require("../models/room");
+const Comment = require("../models/comment");
+const middleware = require("../middleware");
+
+//Add New Comments ROUTE
+router.get("/new", middleware.isLoggedIn, function (req, res) {
+    // find Escape Room by id
+    Room.findById(req.params.id, function (err, room) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", { room: room });
+        }
+    })
+});
+
+//Create New Comments ROUTE
+router.post("/", middleware.isLoggedIn, function (req, res) {
+    //lookup Escape Room using ID
+    Room.findById(req.params.id, function (err, room) {
+        if (err) {
+            console.log(err);
+            res.redirect("/rooms");
+        } else {
+            Comment.create(req.body.comment, function (err, comment) {
+                if (err) {
+                    req.flash("error", "Something went wrong");
+                    console.log(err);
+                } else {
+                    //add username and id to comment
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    //save comment
+                    comment.save();
+                    room.comments.push(comment);
+                    room.save();
+                    req.flash("success", "Successfully added comment");
+                    res.redirect('/rooms/' + room._id);
+                }
+            });
+        }
+    });
+});
+
+//EDIT COMMENT ROUTE
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, function (req, res) {
+    Comment.findById(req.params.comment_id, function (err, foundComment) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            res.render("comments/edit", { room_id: req.params.id, comment: foundComment });
+        }
+    });
+});
+
+// UPDATE COMMENT ROUTE
+router.put("/:comment_id", middleware.checkCommentOwnership, function (req, res) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, updatedComment) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            res.redirect("/rooms/" + req.params.id);
+        }
+    });
+});
+
+// COMMENT DESTROY ROUTE
+router.delete("/:comment_id", middleware.checkCommentOwnership, function (req, res) {
+    //findByIdAndRemove
+    Comment.findByIdAndRemove(req.params.comment_id, function (err) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            req.flash("success", "Comment deleted");
+            res.redirect("/rooms/" + req.params.id);
+        }
+    });
+});
+
+module.exports = router;

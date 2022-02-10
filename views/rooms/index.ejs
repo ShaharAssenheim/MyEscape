@@ -1,0 +1,113 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <!-- the header jumbotron -->
+    <header class="jumbotron ">
+        <div class="container">
+            <h1 class="display-4"><i class="fas fa-door-open"></i>Welcome To MyEscape!</h1>
+            <p class="lead">View our hand-picked Escape Rooms from all over the world</p>
+            <p>
+                <a class="btn btn-primary btn-large" href="/rooms/new">Add New Escape Room</a>
+            </p>
+            <p>
+                <form action="/rooms" method="GET" class="form-inline">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search Escape Rooms...">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </p>
+        </div>
+    </header>
+
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <div class="col-md-12">
+            <% if(noMatch !== null) { %>
+            <h3>
+                <%= noMatch %>
+            </h3>
+
+            <% } %>
+        </div>
+    </div>
+    <!-- showing all the Escape Rooms -->
+    <div class="row text-center" id="room-grid">
+        <% rooms.forEach(function(room){ %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <img class="card-img-top embed-responsive-item" src="<%= room.image %>" alt="<%= room.name %>">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-1">
+                        <%= room.name %>
+                    </h5>
+                    <div class="mb-1">
+                        <span class="badge-pill"><i class="fas fa-thumbs-up"></i> <%= room.likes.length %></span>
+                    </div>
+                    <a href="/rooms/<%= room._id %>" class="btn btn-primary">More Info</a>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <!--  the page navigation navbar -->
+    <nav aria-label="Page navigation">
+        <% if (pages && pages > 0) { %>
+        <ul class="pagination justify-content-center">
+            <% if (current == 1) { %>
+            <li class="page-item disabled"><a class="page-link">First</a></li>
+            <% } else { %>
+            <li><a class="page-link" href="/rooms">First</a></li>
+            <% } %>
+
+            <% if (current == 1) { %>
+            <li class="page-item disabled"><a class="page-link">«</a></li>
+            <% } else { %>
+            <li><a class="page-link" href="/rooms?page=<%= Number(current) - 1 %>">«</a></li>
+            <% } %>
+
+            <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+            <% if (i !== 1) { %>
+            <li class="page-item disabled"><a class="page-link">...</a></li>
+            <% } %>
+            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+            <% if (i == current) { %>
+            <li class="active">
+                <a class="page-link">
+                    <%= i %>
+                </a>
+            </li>
+            <% } else { %>
+            <li>
+                <a class="page-link" href="/rooms?page=<%= i %>">
+                    <%= i %>
+                </a>
+            </li>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < pages) { %>
+            <li class="page-item disabled"><a class="page-link">...</a></li>
+            <% } %>
+            <% } %>
+
+            <% if (current == pages) { %>
+            <li class="page-item disabled"><a class="page-link">»</a></li>
+            <% } else { %>
+            <li><a class="page-link" href="/rooms?page=<%= Number(current) + 1 %>">»</a></li>
+            <% } %>
+
+            <% if (current == pages) { %>
+            <li class="page-item disabled"><a class="page-link">Last</a></li>
+            <% } else { %>
+            <li><a class="page-link" href="/rooms?page=<%= pages %>">Last</a></li>
+            <% } %>
+        </ul>
+        <% } %>
+    </nav>
+</div>
+
+<% include ../partials/footer %>
