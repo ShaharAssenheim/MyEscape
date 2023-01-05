@@ -17,7 +17,7 @@ const express     = require("express"),
 //connect to the local DB
 //mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser:true});
 //connect to the mongoDB atlas DB
-mongoose.connect("mongodb+srv://shaharassen:Flex9358@cluster0-cv4kt.mongodb.net/EscapeRoom?retryWrites=true&w=majority",{
+mongoose.connect(process.env.DATABASE_URL,{
     useNewUrlParser:true,
     useCreateIndex: true,
     useUnifiedTopology: true 
