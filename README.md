@@ -24,7 +24,7 @@ MyEscape is a [Node.js](https://nodejs.org/) web application that shows Recommen
 * Fuzzy Search.
 * Admin Role.
 
-Explore It Here -> [MyEscape](https://stormy-shelf-83135.herokuapp.com/)
+Explore It Here -> [MyEscape](https://my-escape.herokuapp.com/)
 
 
 Author:
